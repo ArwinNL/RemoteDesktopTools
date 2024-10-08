@@ -171,9 +171,14 @@ A RDP session to server01 with the user LAPSAdmin and using the Get-LAPSPassword
             $User     = $Credential.UserName
             $Password = $Credential.GetNetworkCredential().Password
         } else {
-	    $ptr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
-	    $password = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
-            [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
+		try {
+	        	$ptr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
+	    		$password_1 = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr)
+       			[string]$password = $password_1
+	     	}
+      	    	finally {
+            		[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr)
+	   	}
         }
     }
     process {
